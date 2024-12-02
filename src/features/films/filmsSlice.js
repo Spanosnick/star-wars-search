@@ -6,16 +6,12 @@ export const fetchFilms = createAsyncThunk(
     async (arg, thunkAPI) => {
         const state = thunkAPI.getState(); // Access the current state
         const filmsNextUrl = await state.films.filmsNextUrl; // Get filmsNextUrl from the state
-        const searchQuery = await state.general.searchQuery; // Get searchQuery from the state
-        console.log(searchQuery)
         let url
-        if (filmsNextUrl !== '') {
+        // If filmsNextUrl is not null or empty, use it as the URL, otherwise use the default URL
+        if (filmsNextUrl !== null && filmsNextUrl !== '') {
              url = filmsNextUrl;
         } else {
              url = `${baseUrl}films/`;
-        }
-        if (!searchQuery) {
-            url = `${baseUrl}films/?search=${searchQuery}`;
         }
         const data = await fetch(url);
         const json = await data.json();
@@ -24,6 +20,15 @@ export const fetchFilms = createAsyncThunk(
     }
 );
 
+export const fetchWithSearchQuery = createAsyncThunk(
+    "films/fetchWithSearchQuery",
+    async (queryValue, thunkAPI) => {
+        const url = `${baseUrl}films/?search=${queryValue}`;
+        const data = await fetch(url);
+        const json = await data.json();
+        return json;
+    });
+
 
 export const filmsSlice = createSlice({
     name: "films",
@@ -31,24 +36,44 @@ export const filmsSlice = createSlice({
         films: [],
         isFilmsLoading: false,
         filmsError: false,
-        filmsNextUrl: '',
+        filmsNextUrl: null,
     },
 
     extraReducers:(builder) => {
         builder.addCase(fetchFilms.pending, (state) => {
             state.isFilmsLoading = true;
             state.filmsError = false;
-        });
-        builder.addCase(fetchFilms.fulfilled, (state,action) => {
+        })
+        .addCase(fetchFilms.fulfilled, (state,action) => {
             state.isFilmsLoading = false;
             state.filmsError = false;
             state.films = state.films.concat(action.payload.results);
             state.filmsNextUrl = action.payload.next;
-        });
-        builder.addCase(fetchFilms.rejected, (state,action) => {
+        })
+        .addCase(fetchFilms.rejected, (state,action) => {
             state.isFilmsLoading = false;
             state.filmsError = action.payload;
-        });
+        })
+        .addCase(fetchWithSearchQuery.pending, (state) => {
+            state.isFilmsLoading = true;
+            state.filmsError = false;
+        })
+        .addCase(fetchWithSearchQuery.fulfilled, (state,action) => {
+            state.isFilmsLoading = false;
+            if (action.payload.results.length === 0) {
+                state.films = [];
+                state.filmsError = true;
+            } else {
+                state.films = action.payload.results;
+                state.filmsError = false;
+            }
+            state.filmsNextUrl = action.payload.next;
+        })
+        .addCase(fetchWithSearchQuery.rejected, (state,action) => {
+            state.isFilmsLoading = false;
+            state.filmsError = action.payload;
+        })
+
     }
 
 });

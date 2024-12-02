@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {fetchFilms} from "../features/films/filmsSlice";
+import {fetchFilms,fetchWithSearchQuery} from "../features/films/filmsSlice";
 import {setActiveCategory,setSearchQuery} from "../features/general/generalSlice";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -11,18 +11,24 @@ export function SearchBar() {
 
 
 
-    function searchHandler(e){
-        setSearchValue(e.target.value);
-        dispatch(setSearchQuery(searchValue));
-    }
+     function searchHandler(e){
+         const value = e.target.value;
+         setSearchValue(value);
+         dispatch(setSearchQuery(value));
+     }
 
     function selectHandler(e){
-        setSelectValue(e.target.value);
+        const value = e.target.value;
+        setSelectValue(value);
     }
 
     function searchWithQuery(){
-        dispatch(fetchFilms());
         dispatch(setActiveCategory(selectValue));
+         if (searchValue === ''){
+             dispatch(fetchFilms());
+         }else {
+           dispatch(fetchWithSearchQuery(searchValue));
+         }
 
     }
 
