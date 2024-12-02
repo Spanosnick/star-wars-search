@@ -8,7 +8,7 @@
 
 .App {
   text-align: center;
-  min-height: 100vh;
+  min-height: 120vh;
   background-color: var(--primary-color);
   padding: 10px ;
 }
@@ -76,7 +76,8 @@
 
 /*General Card CSS START*/
 .generalCard{
- min-width: 250px;
+ width: 30%;
+  min-height: 230px;
   margin: 10px 0;
   background-color: var(--light-color);
   border-radius: 5px;
@@ -89,3 +90,31 @@
     transition: all 0.3s ease-in-out 0s;
 }
 /*General Card CSS END*/
+
+
+/* spinner.css */
+.spinnerContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+width: 100%;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 40px;
+  height: 40px;
+  margin: 5px auto;
+  border-radius: 50%;
+  border-left-color: var(--light-color);
+  animation: spin 1s ease infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
