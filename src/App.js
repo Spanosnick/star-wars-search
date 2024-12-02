@@ -6,6 +6,7 @@ import {fetchFilms} from "./features/films/filmsSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {selectFilms, selectFilmsError, selectIsFilmsLoading, selectFilmsNextUrl} from "./features/films/filmsSlice";
 import {Spinner} from "./components/Spinner";
+import {DetailsModal} from "./components/DetailsModal";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                 })}
                 {isFilmsLoading && <Spinner/>}
                 {filmsError === true  && <h2 className='noResultsMessage'>No films found please try again !</h2>}
+                <DetailsModal/>
             </div>
         </div>
     );
