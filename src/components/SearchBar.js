@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {fetchFilms,fetchWithSearchQuery} from "../features/films/filmsSlice";
 import {setActiveCategory,setSearchQuery} from "../features/general/generalSlice";
 import {useDispatch, useSelector} from "react-redux";
+import './SearchBar.css'
 
 
 export function SearchBar() {
