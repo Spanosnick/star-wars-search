@@ -7,6 +7,8 @@ export const generalSlice = createSlice({
     initialState: {
         activeCategory: 'films',
         searchQuery: '',
+        modalVisibility: false,
+        modalDetails: {}
     },
     reducers: {
         setActiveCategory: (state, action) => {
@@ -15,11 +17,20 @@ export const generalSlice = createSlice({
         setSearchQuery: (state, action) => {
             state.searchQuery = action.payload;
         },
+        toggleModalVisibility: (state) => {
+            state.modalVisibility = !state.modalVisibility;
+        },
+        setModalDetails: (state, action) => {
+            state.modalDetails = action.payload;
+        }
     }
 });
 
 
 export const selectActiveCategory = (state) => state.general.activeCategory;
 export const selectSearchQuery = (state) => state.general.searchQuery;
-export const { setActiveCategory, setSearchQuery } = generalSlice.actions;
+export const modalVisibility = (state) => state.general.modalVisibility;
+export const modalDetails = (state) => state.general.modalDetails;
+export const { setActiveCategory, setSearchQuery
+    ,toggleModalVisibility,setModalDetails } = generalSlice.actions;
 export default generalSlice.reducer;
