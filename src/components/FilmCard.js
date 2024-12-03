@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import './FilmCard.css';
 import {useDispatch, useSelector} from "react-redux";
 import {toggleModalVisibility} from "../features/general/generalSlice";
-import { selectFilms} from "../features/films/filmsSlice";
+import { selectFilms} from "../features/films/FilmsSlice";
 import {setModalDetails} from "../features/general/generalSlice";
 
 export function FilmCard(props) {

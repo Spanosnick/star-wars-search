@@ -21,7 +21,6 @@ export function DetailsModal() {
 
                 {Object.keys(modaldetails).map((key,value) => {
                     if (Array.isArray(modaldetails[key])) {
-
                         return (
                             <h3 className='detailsAttribute '
                                 key={key}> {key} {modaldetails[key].map((array_value) =>

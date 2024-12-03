@@ -21,8 +21,8 @@ export const fetchFilms = createAsyncThunk(
 );
 
 
-export const fetchWithSearchQuery = createAsyncThunk(
-    "films/fetchWithSearchQuery",
+export const fetchFilmsWithSearch = createAsyncThunk(
+    "films/fetchFilmsWithSearch",
     async (queryValue, thunkAPI) => {
         const url = `${baseUrl}films/?search=${queryValue}`;
         const data = await fetch(url);
@@ -155,7 +155,7 @@ const dummy = [
 ];
 
 
-export const filmsSlice = createSlice({
+export const FilmsSlice = createSlice({
     name: "films",
     initialState: {
         films: [],
@@ -178,11 +178,11 @@ export const filmsSlice = createSlice({
             state.isFilmsLoading = false;
             state.filmsError = action.payload;
         })
-        .addCase(fetchWithSearchQuery.pending, (state) => {
+        .addCase(fetchFilmsWithSearch.pending, (state) => {
             state.isFilmsLoading = true;
             state.filmsError = false;
         })
-        .addCase(fetchWithSearchQuery.fulfilled, (state,action) => {
+        .addCase(fetchFilmsWithSearch.fulfilled, (state,action) => {
             state.isFilmsLoading = false;
             if (action.payload.results.length === 0) {
                 state.films = [];
@@ -193,7 +193,7 @@ export const filmsSlice = createSlice({
             }
             state.filmsNextUrl = action.payload.next;
         })
-        .addCase(fetchWithSearchQuery.rejected, (state,action) => {
+        .addCase(fetchFilmsWithSearch.rejected, (state,action) => {
             state.isFilmsLoading = false;
             state.filmsError = action.payload;
         })
@@ -208,4 +208,4 @@ export const selectFilmsError = (state) => state.films.filmsError;
 export const selectFilmsNextUrl = (state) => state.films.filmsNextUrl;
 
 
-export default filmsSlice.reducer;
+export default FilmsSlice.reducer;

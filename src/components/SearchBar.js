@@ -1,8 +1,9 @@
 import React, {useState} from "react";
-import {fetchFilms,fetchWithSearchQuery} from "../features/films/filmsSlice";
+import {fetchFilms, fetchFilmsWithSearch} from "../features/films/FilmsSlice";
 import {setActiveCategory,setSearchQuery} from "../features/general/generalSlice";
 import {useDispatch, useSelector} from "react-redux";
 import './SearchBar.css'
+import {fetchPeople, fetchPeopleWithSearch} from "../features/people/PeopleSlice";
 
 
 export function SearchBar() {
@@ -25,11 +26,16 @@ export function SearchBar() {
 
     function searchWithQuery(){
         dispatch(setActiveCategory(selectValue));
-         if (searchValue === ''){
-             dispatch(fetchFilms());
-         }else {
-           dispatch(fetchWithSearchQuery(searchValue));
-         }
+        if (selectValue === 'films' && searchValue === ''){
+            dispatch(fetchFilms());
+        }else if (selectValue === 'films' && searchValue !== ''){
+            dispatch(fetchFilmsWithSearch(searchValue));
+        }else if (selectValue === 'people' && searchValue === '') {
+            dispatch(fetchPeople());
+        }else if (selectValue === 'people' && searchValue !== '') {
+            dispatch(fetchPeopleWithSearch(searchValue));
+        }
+
 
     }
 
@@ -39,10 +45,6 @@ export function SearchBar() {
         <select onChange={selectHandler} >
             <option value='films'>Films </option>
             <option value='people'>People </option>
-            <option value='planets'>Planet </option>
-            <option value='species'>Species </option>
-            <option value='starships'>Starships </option>
-            <option value='vehicles'>Vehicles </option>
         </select>
         <button onClick={searchWithQuery}>Search</button>
     </div>
